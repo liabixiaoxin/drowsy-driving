@@ -1,0 +1,132 @@
+.page-header{
+	margin-bottom: 0;
+}
+.video-text{
+	margin-top: -7px;
+	padding-right: 40px;
+	line-height: 2.7em;
+	font-size: 15px;
+}
+.video{
+	padding: 0 20px 0px 40px;
+
+}
+.jumbotron {
+  width: 100%;
+  padding:2%;
+  line-height: 3em;
+  background: #f2f2f2;
+  font-size: 16px;
+  /*color: #fdfdfd;*/
+  margin-bottom: 0;
+  /*text-shadow: 0 0 1px #333;  so one can see fadeBgColor properly */
+}
+
+.content_odd{
+	background-color: rgba(0,0,0,0.8);
+	color: white;
+}
+.content_even{
+	background-color: 
+}
+li{
+	font-size: 18px;
+}
+/*Result*/
+#li-text{
+	font-size:1.5rem;
+}
+.panel-title{
+	text-align: center;
+	line-height: 1em;
+	font-size: 2.5rem;
+    padding: 10px;
+}
+.blink-img{
+	height: 150px;
+	width: 300px;
+
+}
+#treshold-text{
+	padding-left: 10%;
+}
+#pi-img{
+	width: 60%;
+}
+.pi-text{
+	padding-right: 4%;
+}
+/*How it Works?*/
+.bc{
+	width: 262.625px;
+	height: 130px;
+	background-color: white;
+}
+.newspaper{
+	margin-top: 40px;
+}
+
+.ui-text{
+	background-color: white;
+	text-align: center;
+	padding-top: 2rem;
+	color: black;
+}
+
+.polaroid1 {
+  box-shadow: 0 10px 8px 0 rgba(0, 0, 0, 0.2), 10px 10px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/*Drowsiness Dedection*/
+#eye-icon{
+	width: 60px;
+}
+.well{
+	padding:1px 19px 1px 19px;
+	margin: 0;
+}
+#headingOne:hover, .ui-text1:hover ,.well1:hover{
+	background-color: #FFAA48 !important;
+	color: white;
+}
+
+#headingTwo:hover,.ui-text2:hover,.well2:hover{
+	background-color: #4653B9 !important;
+	color: white;
+}
+
+#headingThree:hover,.ui-text3:hover,.well3:hover{
+	background-color: #FFCC48 !important;
+	color: white;
+}
+
+#headingFour:hover,.ui-text4:hover,.well4:hover{
+	background-color: #5BA0C2 !important;
+	color: white;
+}
+#headingFive:hover{
+	background-color: #ff7171 !important;
+	color: white;
+}
+.well-text{
+	margin-top: 0.5rem;
+}
+
+
+/*WHO WE ARE?*/
+.people{
+	font-size: 
+}
+.people_img{
+	width: 50%;
+	height: 50%;
+	border-radius: 80px;
+	border-color: black;
+	border-width: 2px;
+}
+
+.name{
+	text-align:center;
+	margin-top: 5px;
+}
+

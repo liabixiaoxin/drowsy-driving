@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <title>Drowsy-driving by Pantsworth</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen"> 
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+     <link rel="stylesheet" href="stylesheets/animate.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/index.css" media="screen">
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">Drowsy-driving</h1>
+      <h1 class="project-name">Drowsy-Driving</h1>
       <h2 class="project-tagline"></h2>
       <a href="https://github.com/Pantsworth/drowsy-driving" class="btn">View on GitHub</a>
       <a href="https://github.com/Pantsworth/drowsy-driving/zipball/master" class="btn">Download .zip</a>
@@ -19,17 +23,460 @@
     </section>
 
     <section class="main-content">
-      <h1>
-<a id="drowsy-driving" class="anchor" href="#drowsy-driving" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>drowsy-driving</h1>
+      <div class="jumbotron fadeInDown animated content_odd">
+        <div class="row">
+          <!-- <div class="container"> -->
+            <div class="video col-md-5">
 
-<p>PROJECT FOR EECS 395/495: Wireless and Mobile Health</p>
+              <iframe width="450" height="315" src="https://www.youtube.com/embed/adgXvC8Ppo8" frameborder="0" allowfullscreen></iframe>
 
-<p>Focused on recognizing drowsy driving through yawn and blink detection in a car-mounted webcam system powered by a Raspberry Pi.</p>
+            </div>
 
-<p>Many thanks to Shantnu Tiwari for this starter code:
-<a href="https://github.com/shantnu/FaceDetect">https://github.com/shantnu/FaceDetect</a>
-and a great tutorial:
-<a href="https://realpython.com/blog/python/face-recognition-with-python/">https://realpython.com/blog/python/face-recognition-with-python/</a></p>
+            <div class="video-text col-md-6 col-md-offset-1">
+              <p>Drowsy Driving is a widespread problem in the United States. It is a known cause of crashes and fatal accidents every year. </p>
+              <p>Nevertheless, identifying drowsiness and acting on it is a challenging task. </p>
+              <p>Our App presents a novel mobile solution in order to identify drowsiness and keep drowsy drivers awake. </p>
+              
+            </div>
+          <!-- </div> -->
+        </div>  <!-- row -->  
+      </div>
+      
+
+
+      <div class="jumbotron fadeInDown animated content_even result">
+        <h2 >RESULTS</h2>
+          
+
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+              <a class="collapsed"role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Drowsiness Detection
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+              <ul>
+                <li>Successful blink/yawn detection (subject to proper lighting and forward facing).</li>
+                <li>Limitation: Proper lighting and forward facing is need.</li>
+                <li>Image Analysis Theory 
+                  <div id="li-text">
+                    <p>
+
+
+                      We are attempting to identify both blink and yawn. We developed an algorithm in an attempt to speed up the recognition of these features and determine the required features for classification. The flowchart of the detection algorithm is shown below: <br>
+
+                      <ul>
+                        <li>
+                        Camera input → Convert to Grayscale
+                        </li>
+
+                      
+                        <li>
+                        Face Detection → Crop image to eye region → Identify eyes through Haar Cascade Classifier
+                        <br>
+                             → Crop image to mouth region under regular conditions → Identify mouth though Haar Cascade Classifier
+                        </li>
+                      </ul>
+
+                      <h4>Camera Input, Conversion to Grayscale</h4>
+                      The first step of the algorithm is to implement conversion to grayscale. Since the feature of color is not being considered for classification, the information of colors is removed such that the computational complexity of the algorithm is reduced. <br>
+
+                      <h4>Face Detection</h4>
+                      The next step is to detect the face from video feed recorded by camera. This classification and any future classifications are used via <i>"Haar feature-based cascade classification" </i>proposed by Paul Viola and Michael Jones [reference to paper]. This is a machine learning-based approach where a cascade function is trained from a lot of positive and negative images. This method has many benefits, one of which is high accuracy and high speed. Its detection rates is as good as other image analysis techniques but at a much faster rate. <br>
+                       This algorithm extracts features via a convolutional kernel. Each feature is a single value obtained by applying a rectangular mask to the image. The resulting computation nevertheless is over 16,000 features. In order to simplify the calculation, they introduce the concept of an integral image. The resulting classifier is a weighted sum of the weak classifiers. Nevertheless, the final feature consists of approximately 6,000 features to check. 
+                      <br>
+      
+                      To solve this problem, Viola and Jones established the idea of a “Cascade of Classifiers”. Instead of applying all the 6,000 features ona window, features were grouped into different stages of classifiers and applied one by different. A cascading classification essentially means “If one classifier passes, continue to the next one” and so on. This simple modification dramatically reduces the time to recognize an image. 
+                      <br>
+
+                      Applying the Viola Jones algorithm allows us to perform face recognition at a relatively high speed (about 26 fps on a Macbook Pro and 10 fps on a Raspberry Pi). 
+                      <br>
+
+                      <h4>Eye Detection</h4>
+                      Once the face is recognized, the cascade classifier was applied in order to detect at least one eye. Note that since blinking happens with both eyes almost simultaneously, we only care whether we can identify an eye or not. In order to speed up the recognition process, we created a bounding box of the eye region. The bounding box implemented matrix operations to cut the region of interest and run eye detection on that region. Because of the reduction in size, the eye detection was very fast and relatively accurate. 
+
+                      <h4>Eye Blink Detection</h4>
+                      The algorithm to detect a blink is a sub-process within the overall algorithm that determines whether an eye was closed for the appropriate time based on multiple frames. The eye detection algorithm was tuned to the point where it would be very selective to the human eye. 
+                      The blink detection is implemented by implementing a finite state machine. (link: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7396336) perform blink detection via corner detection and distance calculation. Nevertheless, because of the need for performance in our algorithm, corner detection and calculations were ommitted. The finite state machine structure can be see in the diagram below:
+
+                      <q>(DIAGRAM) -> State Machine to determine blinking</q>
+
+
+                      <h4>Blink Length Detection</h4>
+                      As seen in the state machine diagram above, the blink length detection can be calculated by subtracting the time from which the blink is detected to the time when the blink is determined to be finished. 
+
+                      <h4>Yawn Detection </h4>
+                      In a very similar manner to the blink detection, the yawn detection is performed by attempting to locate the mouth in a limited bounded box. Upon observation, we noticed that a yawn would mean an increase in the size of the mouth. We then designed an appropriate bounding box such that a yawn would overrun the bounding box and the mouth would not be detected. The finite state machine to determine yawns follows:
+
+
+
+                      <h4>How to Determine Drowsiness</h4>
+
+                      A following step in the algorithm is drowsiness detection. Previous papers showed large detection accuracy by making use of only blinking information. We considered another factor such as the yawn rate and blink length. (<a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7396336">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7396336</a>) <a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5648121">http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5648121</a>.
+
+                      <br>
+                      We proposed a simple classifier to determine drowsiness in place to previous research where simple blink ratio or blink length was used. The three features in our design were blink rate, yawn rate, and avg blink length of the last 10 blinks (all moving averages). This data feed is analyzed in the Raspberry Pi (onboard computer) and sent directly to the back-end server. 
+
+                      Classification:
+                        We tried many classification algorithms using Weka. J48 Classifier proved an accuracy of about 90% correctly classified instances.  Figure {FIGURE} shows the confusion matrix for the classification algorithm. 
+                        
+
+
+
+
+                   </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Data Communication
+              </a>
+            </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+              <ul>
+                <li>Implementation of Detector => Cloud => Android App</li>
+                <li>Update data every 2 seconds.</li>
+                <li>Easy to manipulate the database</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default well-1">
+          <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                 Threshold Calculation
+              </a>
+            </h4>
+          </div>
+          <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-6 ">
+                  <p id = "treshold-text">We record 20 people 's blink rate, blink length, yawn rate and also consider the glass factor, hand gesture, to determine a reasonable threshold to define drowsiness.</p>
+                </div>
+                <div class="col-md-4 col-md-offset-2">
+                  <div class="row"><img class="blink-img" src="img/blinkRate.png" alt="Blink Rate histogram (red=sleepy) ">
+                    <br>  Blink Rate Histogram (red=sleepy)</div>
+                  <div class="row"><img class="blink-img" src="img/yawnRate.png" alt="Yawn Rate histogram (red=sleepy)">
+                    <br>  Yawn Rate Histogram (red=sleepy)
+                  </div>
+                </div>
+            </div>     
+        </div>
+      </div>
+    </div>
+
+       <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingFour">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                Raspberry Pi
+              </a>
+            </h4>
+          </div>
+          <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                <img id="pi-img" src="img/raspberrypi.png" alt="Raspberry-pi">
+                  <!-- <br>Raspberry-pi record driver's face imange, analyse  -->
+                </div>
+                <div class="col-md-6 pi-text">
+                 <p>Optimized to a maximum performance of 5 fps.
+                    <q>We need 2 frames to detect a blink = 0.4 seconds + overhead (detection)</q>
+                    <br><q>However, average blink is 0.2 seconds ⇒ lost detecting blinks</q>
+                 </p>
+                </div>
+              </div>     
+            </div>
+           </div>
+      </div>
+
+      <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingFive">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                Android Application
+              </a>
+            </h4>
+          </div>
+          <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+            <div class="panel-body">
+               <div class="row newspaper">
+
+           <div class="polaroid col-md-3">
+            <img src="img/dd.jpg" alt="data page" style="width:100%">
+            <div class="container ui-text ui-text1">
+            <p  >Drowsy Driving</p>
+           </div>
+          </div> 
+
+       
+          <div class="polaroid col-md-3">
+            <img src="img/dispayData.jpg" alt="data page" style="width:100%">
+            <div class="container ui-text ui-text3">
+            <p>Display Data</p>
+            </div>
+          </div>
+
+          <div class="polaroid col-md-3">
+            <img src="img/alert.jpg" alt="data page" style="width:100%">
+            <div class="container ui-text ui-text2">
+            <p>Alert Driver</p>
+           </div>
+          </div>
+
+          <div class="polaroid col-md-3">
+            <img src="img/googleMap.jpg" alt="data page" style="width:100%">
+            <div class="container ui-text ui-text4">
+            <p>Redirect to Google Map</p>
+           </div>
+         </div>
+        </div>
+            </div>
+          </div>
+        </div>
+
+ </div>
+  </div>
+
+      <div class="jumbotron fadeInDown animated content_odd">
+       <h2>HOW IT WORKS?</h2> 
+       <div class="row">
+        <div class="ppt col-md-5"><img src="img/how.png" alt="How Drowsy-Driving Works"></div>
+        <div class="text_intro col-md-7">
+          <ul>
+            <li>Mounted camera records the image of driver while driving.</li>
+            <li>Respberry-Pi does image analysis to tell the level of drowsiness.</li>
+            <li>Upload data to database</li>
+            <li>Android App pulls data from Database.</li>
+            <li>Alert driver when passing the threshold and interact with driver to keep them awake.</li>
+          </ul>
+
+        </div>
+        </div>
+
+
+        <div class="row newspaper">
+
+           <div class="polaroid col-md-3">
+            <div class="bc">
+            <img src="img/dd.jpg" alt="data page" style="height:130px; padding-left:33%">
+            </div>
+            <div class="container ui-text ui-text1">
+            <p  >Android Application</p>
+           </div>
+          </div> 
+
+            <div class="polaroid col-md-3">
+            <img src="img/data.png" alt="data page" style="width:100%">
+            <div class="container ui-text ui-text2">
+            <p>Display Data</p>
+           </div>
+          </div>
+       
+          <div class="polaroid col-md-3">
+            <img src="img/speak.png" alt="data page" style="width:100%">
+            <div class="container ui-text ui-text3">
+            <p>Alert Driver</p>
+            </div>
+          </div>
+
+          <div class="polaroid col-md-3">
+            <img src="img/map.png" alt="data page" style="width:100%">
+            <div class="container ui-text ui-text4">
+            <p>Redirect to Google Map</p>
+           </div>
+         </div>
+        </div>
+
+      </div>  
+
+
+
+      
+      <div class="jumbotron fadeInDown animated content_even">
+       <h2>DROWSINESS DETECTION</h2> 
+       <!-- <h4> Image Analysis</h4> -->
+        <div class="row well well1">
+          <div class="col-md-2"><img src="img/eye_icon.png" alt="eye icon" id= "eye-icon"></div>
+          <div class="col-md-10 well-text ">Detect Face, Eyes, Mouth => Blink Rate Detection  &  Blink Length Detection  </div>
+        </div>
+        
+        <div class="row well well2">
+          <div class="col-md-2"><img src="img/yawn.png" alt="eye icon" id= "eye-icon"></div>
+          <div class="col-md-10 well-text ">Yawn Rate Detection  </div>
+        </div>
+        <div class="row well well3">
+          <div class="col-md-2"><img src="img/glasses.png" alt="eye icon" id= "eye-icon"></div>
+          <div class="col-md-10 well-text">Wearing Glasses or Not?  </div>
+        </div>
+         <div class="row well well4">
+          <div class="col-md-2"><img src="img/hand.png" alt="eye icon" id= "eye-icon"></div>
+          <div class="col-md-10 well-text">Gesture Affect  </div>
+        </div>
+
+
+      </div>  
+
+
+
+
+      <div class="jumbotron fadeInDown animated survey content_odd">
+        <h2> HOW DO YOU LIKE THE APP?</h2>
+        <div class="survey">
+          <form action="">
+          <lable >How do you like "Drowsy Driving"?</lable>
+          <ul class='likert'>
+      <li>
+        <input type="radio" class = "submit1" name="likert3" value="strong_agree">
+        <label>Awsome</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit1" name="likert3" value="strong_agree">
+        <label>A Lot</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit1" name="likert3" value="strong_agree">
+        <label>Good</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit1" name="likert3" value="strong_agree">
+        <label>Fine</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit1" name="likert3" value="strong_agree">
+        <label>I hate it!</label>
+      </li>
+      
+    </ul>
+
+  
+
+          <lable>What is the part you hate most about this app?</lable>
+          <ul class='likert  '>
+      <li>
+        <input type="radio" class = "submit2" name="likert1" value="strong_agree">
+        <label>App Style</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit2" name="likert1" value="strong_agree">
+        <label>Alert Sound</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit2" name="likert1" value="strong_agree">
+        <label>Some function</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit2" name="likert1" value="strong_agree">
+        <label>Data Accuracy</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit1" name="likert1" value="strong_agree">
+        <label>I don't know!</label>
+      </li>
+      
+    </ul>
+  
+          <lable>What do you like the most of this?</lable>
+          <ul class='likert '>
+      <li>
+        <input type="radio" class = "submit3" name="likert2" value="strong_agree">
+        <label>App Style</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit3" name="likert2" value="strong_agree">
+        <label>Alert Sound</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit3" name="likert2" value="strong_agree">
+        <label>Nearby spot</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit3" name="likert2" value="strong_agree">
+        <label>Data Accuracy</label>
+      </li>
+      <li>
+        <input type="radio" class = "submit3" name="likert" value="strong_agree">
+        <label>I don't know!</label>
+      </li>
+      
+    </ul>
+  
+    <div class="buttons">
+        <p class="submit-fail"> </p> <!-- alert pople to answer all the questions when they didn't -->
+        <button class="submit">Submit</button>
+    </div>
+  
+    </div>
+      </form>
+      </div>
+      
+       <div class="jumbotron fadeInDown animated team-intro content_even bc6">
+        <h2>WHO WE ARE?</h2>
+        <div class="row">
+          <div class="people col-md-3">
+            <div class="thumbnail">
+              <img  class = "people_img"  src="img/b.jpg" alt="Bruno">
+              <p class="name">Bruno Peynetti</p >
+              <div class="caption people_intro">Focused on recognizing drowsy driving through yawn and blink detection in a car-mounted webcam system powered by a Raspberry Pi.</div>
+            </div>
+          </div>
+        
+        <div class="people col-md-3">
+            <div class="thumbnail">
+              <img class = "people_img" src="img/m.jpg" alt="Micheal">
+              <p class="name">Michael Nowakowski</p > 
+              <div class="caption people_intro">Focused on recognizing drowsy driving through yawn and blink detection in a car-mounted webcam system powered by a Raspberry Pi.</div>
+            </div>
+        </div>
+        <div class="people col-md-3">
+            <div class="thumbnail">
+              <img  class = "people_img"  src="img/yang.jpg" alt="Baiyu">
+              <p class="name">Baiyu Yang</p >
+              <div class="caption people_intro">Focused on recognizing drowsy driving through yawn and blink detection in a car-mounted webcam system powered by a Raspberry Pi.</div>
+            </div>
+        </div> 
+        <div class="people col-md-3">
+            <div class="thumbnail">
+              <img  class = "people_img"  src="img/yannan.jpg" alt="Yannan">
+                <p class="name">Yannan Xu</p >
+              <div class="caption people_intro">Focused on recognizing drowsy driving through yawn and blink detection in a car-mounted webcam system powered by a Raspberry Pi.</div>
+            </div>
+        </div>
+        
+       </div>
+
+     </div>   
+
+      <div class="jumbotron fadeInDown animated content_odd">
+        <h2>NOTE</h2>
+        <h4>PROJECT FOR EECS 395/495: Wireless and Mobile Health</h4>
+
+        <p>Drowsy Driving is an Android mobile phone App devoted to detecting driver's drowsiness and keep driver awake.</p>
+        <p>Recognizing drowsy driving through yawn and blink detection in a car-mounted webcam system powered by a Raspberry Pi.</p>
+          <hr>
+        <q>Many thanks to Shantnu Tiwari for this starter code:
+        <a href="https://github.com/shantnu/FaceDetect">https://github.com/shantnu/FaceDetect</a>
+        and a great tutorial:
+        <a href="https://realpython.com/blog/python/face-recognition-with-python/">https://realpython.com/blog/python/face-recognition-with-python/</a></q>
+      </div>
+
+
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/Pantsworth/drowsy-driving">Drowsy-driving</a> is maintained by <a href="https://github.com/Pantsworth">Pantsworth</a>.</span>
@@ -40,5 +487,9 @@ and a great tutorial:
     </section>
 
   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/index.js"></script>
   </body>
 </html>
