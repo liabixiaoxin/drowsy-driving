@@ -23,7 +23,7 @@
     </section>
 
     <section class="main-content">
-      <div class="jumbotron fadeInDown animated content_odd">
+      <div class="jumbotron fadeInDown animated content_even">
         <div class="row">
           <!-- <div class="container"> -->
             <div class="video col-md-5">
@@ -37,6 +37,29 @@
               <p>Nevertheless, identifying drowsiness and acting on it is a challenging task. </p>
               <p>Our App presents a novel mobile solution in order to identify drowsiness and keep drowsy drivers awake. </p>
               
+            </div>
+          <!-- </div> -->
+        </div>  <!-- row -->  
+      </div>
+
+
+
+      <div class="jumbotron fadeInDown animated content_odd">
+        <div class="row">
+          <!-- <div class="container"> -->
+            <div class="video col-md-5">
+
+              <img src="img/index.png" alt="flowchart" class="chart">
+
+            </div>
+
+            <div class="video-text col-md-6 col-md-offset-1">
+              <object data="myfile.pdf" type="application/pdf"  height="100%">
+               
+                <p>you can <a href="myfile.pdf">click here to
+                download the PDF file.</a></p>
+                
+              </object> 
             </div>
           <!-- </div> -->
         </div>  <!-- row -->  
@@ -165,10 +188,11 @@
           <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
             <div class="panel-body">
               <div class="row">
-                <div class="col-md-6 ">
-                  <p id = "treshold-text">We record 20 people 's blink rate, blink length, yawn rate and also consider the glass factor, hand gesture, to determine a reasonable threshold to define drowsiness.</p>
+                <div class="col-md-7 ">
+                  <p class = "treshold-text">In order to determine whether the driver is sleepy or not, we collected samples from 20 individuals. To establish ground truth, we used a small questionnaire previous to the study and in addition, considered the time of day.</p>
+                  <p class = "treshold-text">A classifier was trained using approximately 150 negative data points and 100 positive data points from these 20 individuals. The machine-learning tool Weka allows to compare multiple classification algorithms with the given data without having to code the algorithms.</p>
                 </div>
-                <div class="col-md-4 col-md-offset-2">
+                <div class="col-md-4 col-md-offset-1">
                   <div class="row"><img class="blink-img" src="img/blinkRate.png" alt="Blink Rate histogram (red=sleepy) ">
                     <br>  Blink Rate Histogram (red=sleepy)</div>
                   <div class="row"><img class="blink-img" src="img/yawnRate.png" alt="Yawn Rate histogram (red=sleepy)">
@@ -243,7 +267,7 @@
           <div class="polaroid col-md-3">
             <img src="img/googleMap.jpg" alt="data page" style="width:100%">
             <div class="container ui-text ui-text4">
-            <p>Redirect to Google Map</p>
+            <p>Open Google Map</p>
            </div>
          </div>
         </div>
@@ -263,7 +287,7 @@
             <li>Mounted camera records the image of driver while driving.</li>
             <li>Respberry-Pi does image analysis to tell the level of drowsiness.</li>
             <li>Upload data to database</li>
-            <li>Android App pulls data from Database.</li>
+            <li>Android App pulls data from database.</li>
             <li>Alert driver when passing the threshold and interact with driver to keep them awake.</li>
           </ul>
 
@@ -275,7 +299,7 @@
 
            <div class="polaroid col-md-3">
             <div class="bc">
-            <img src="img/dd.jpg" alt="data page" style="height:130px; padding-left:33%">
+            <img src="img/dd.jpg" alt="data page" style="height:130px;padding-left:33% ; padding-right: 40%;background-color: rgba(51, 127, 183, 0.38);">
             </div>
             <div class="container ui-text ui-text1">
             <p  >Android Application</p>

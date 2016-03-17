@@ -47,8 +47,10 @@ li{
 	width: 300px;
 
 }
-#treshold-text{
+.treshold-text{
 	padding-left: 10%;
+	line-height: 3.5rem;
+    text-align: left;
 }
 #pi-img{
 	width: 60%;
