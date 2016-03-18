@@ -42,6 +42,11 @@ object{
 }
 }
 /*Result*/
+#result-1-li{
+	font-size: 4rem;
+	font-style: bold;
+}
+
 #li-text p,#li-text li{
 	font-size:1.5rem;
 }
