@@ -45,18 +45,19 @@
 
 
       <div class="jumbotron fadeInDown animated content_odd">
+         <h2 >Drowsy Driving Breakdown</h2>
         <div class="row">
           <!-- <div class="container"> -->
-            <div class="video col-md-5">
+            <div class="video col-md-6">
 
               <img src="img/index.png" alt="flowchart" class="chart">
 
             </div>
 
-            <div class="video-text col-md-6 col-md-offset-1">
-              <object data="myfile.pdf" type="application/pdf"  height="100%">
+            <div class="video-text col-md-6 ">
+              <object data="img/drowsy_driving.pdf" type="application/pdf" view= "Fit">
                
-                <p>you can <a href="myfile.pdf">click here to
+                <p>you can <a href="img/main.pdf">click here to
                 download the PDF file.</a></p>
                 
               </object> 
@@ -88,71 +89,57 @@
                 <li>Limitation: Proper lighting and forward facing is need.</li>
                 <li>Image Analysis Theory 
                   <div id="li-text">
-                    <p>
-
-
-                      We are attempting to identify both blink and yawn. We developed an algorithm in an attempt to speed up the recognition of these features and determine the required features for classification. The flowchart of the detection algorithm is shown below: <br>
+                    <p>We proposed a  drowsiness detection algorithm by making use of a variety of classification techniques in order to create a more robust and accurate classifier. Some previous work does not solve the problem by identifying drowsiness, but rather by identifying one of the features of drowsiness such as a closed eye. We chose to focus on 3 features and built a classification algorithm based on these features: </p>
 
                       <ul>
-                        <li>
-                        Camera input → Convert to Grayscale
-                        </li>
+                        <li>Blink rate (blinks per minute)</li>
 
-                      
-                        <li>
-                        Face Detection → Crop image to eye region → Identify eyes through Haar Cascade Classifier
-                        <br>
-                             → Crop image to mouth region under regular conditions → Identify mouth though Haar Cascade Classifier
-                        </li>
+                        <li>Yawn rate (yawns per minute)</li>
+
+                        <li> Blink length (moving average length of previous yawns</li>
                       </ul>
 
-                      <h4>Camera Input, Conversion to Grayscale</h4>
-                      The first step of the algorithm is to implement conversion to grayscale. Since the feature of color is not being considered for classification, the information of colors is removed such that the computational complexity of the algorithm is reduced. <br>
+                      <p>In order to calculate these features, we designed an algorithm that will make use of image recognition analysis in order to detect the face, eyes, and mouth in every frame. Afterwards, information from subsequent frames is fed into the algorithm in order to extract the required features.</p>
+                      <p>The flowchart in Figure 1 describes the process to detect drowsiness. The algorithm is attempted with each camera frame, and a different algorithm (discussed later in the section) determines the level of drowsiness. <img src="img/flowchart.jpg" alt="flowchart" width="502"  align="right" margin-right = "-200px"> </p>
 
                       <h4>Face Detection</h4>
-                      The next step is to detect the face from video feed recorded by camera. This classification and any future classifications are used via <i>"Haar feature-based cascade classification" </i>proposed by Paul Viola and Michael Jones [reference to paper]. This is a machine learning-based approach where a cascade function is trained from a lot of positive and negative images. This method has many benefits, one of which is high accuracy and high speed. Its detection rates is as good as other image analysis techniques but at a much faster rate. <br>
-                       This algorithm extracts features via a convolutional kernel. Each feature is a single value obtained by applying a rectangular mask to the image. The resulting computation nevertheless is over 16,000 features. In order to simplify the calculation, they introduce the concept of an integral image. The resulting classifier is a weighted sum of the weak classifiers. Nevertheless, the final feature consists of approximately 6,000 features to check. 
-                      <br>
-      
-                      To solve this problem, Viola and Jones established the idea of a “Cascade of Classifiers”. Instead of applying all the 6,000 features ona window, features were grouped into different stages of classifiers and applied one by different. A cascading classification essentially means “If one classifier passes, continue to the next one” and so on. This simple modification dramatically reduces the time to recognize an image. 
-                      <br>
+                      <p>The first step of the drowsiness detection algorithm is face detection. Since our approach requires image analysis and recognition in each frame, performance is a necessary attribute. Viola and Jones's algorithm for real-time face detection was deemed appropriate. The algorithm works on the basis of classification based on simple features rather than pixels directly.</p>
+                           
+                      <p> In order to decrease the time to process the image, a cascade of weak classifiers is built. Each weak classifier is not able to individually classify the image, but the combination of classifiers is able to discern the correct object. </p>
 
-                      Applying the Viola Jones algorithm allows us to perform face recognition at a relatively high speed (about 26 fps on a Macbook Pro and 10 fps on a Raspberry Pi). 
-                      <br>
+                      <p>The implementation of this classifier was used by means of the Python OpenCV 2.4 library, which is optimized to work as a wrapper for the OpenCV C++ functions, and thus provides a performance similar in its bare-bones Python library as in the C++ implementation. We decided to use the Python version for simplicity of code and development speed.</p>
 
                       <h4>Eye Detection</h4>
-                      Once the face is recognized, the cascade classifier was applied in order to detect at least one eye. Note that since blinking happens with both eyes almost simultaneously, we only care whether we can identify an eye or not. In order to speed up the recognition process, we created a bounding box of the eye region. The bounding box implemented matrix operations to cut the region of interest and run eye detection on that region. Because of the reduction in size, the eye detection was very fast and relatively accurate. 
+                     <p>The implementation of this classifier was used by means of the Python OpenCV 2.4 library </p>
+                     <p>The eye detection algorithm uses a very similar approach to the cascade-based classification that identifies a face. Nevertheless, an eye is harder to recognize and thus easier to miss-classify. As a result, the bounding window on which the eye was searched for was significantly decreased in an effort to achieve higher accuracy and  performance.</p>
+                     <p>For an identified face starting at coordinates (x,y) and with a width of $w$ and a height of h, the face image can be represented as the following:</p>
+                      <ul style="list-style-type:none"> 
+                        <li><i>face = Image[y:y+h,x:x+w]</i></li>
+                      </ul>
+                      
+                     <p> Where Image is the captured frame with a camera. The bounding box for the eye is as following:</p>
+                      <ul style="list-style-type:none"> 
+                        <li><i>eye = Image[(y+h/5):(y+h/2),x:(x+w)]</i></li>
+                      </ul>
+                      <p>Additionally, it should be noted that the cascade classifier can and will find one or two eyes depending on the lighting conditions, camera positioning, and other factors. Since blinking mostly occurs with both eyes simultaneously, we considered only the cases when we <b>1) detected open eyes and 2) did not detect eyes</b></p>
 
                       <h4>Eye Blink Detection</h4>
-                      The algorithm to detect a blink is a sub-process within the overall algorithm that determines whether an eye was closed for the appropriate time based on multiple frames. The eye detection algorithm was tuned to the point where it would be very selective to the human eye. 
-                      The blink detection is implemented by implementing a finite state machine. (link: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7396336) perform blink detection via corner detection and distance calculation. Nevertheless, because of the need for performance in our algorithm, corner detection and calculations were ommitted. The finite state machine structure can be see in the diagram below:
+                      <p>The algorithm proposed to detect the blink rate and blink length is an implementation of a finite state machine which feeds its result to a historic data array, a portion of which is then analyzed and sent to the back-end storage. A discussion of the finite state machine follows:</p>
+                      <p id = "blink-side-text">The Finite state machine can be seen in Figure 2. Its operation spans a minimum of 3 frames, 2 to detect a blink and 3 to also detect the length of the blink. Using the Python time library allows reliable measurement of blink length without the need to account for different fps performance in the algorithm. After a blink is detected and its time and length calculated, that information is saved in two separate arrays. The array containing information about the start time of a blink is used to determine blink ratio (blinks per minute) whereas the blink length array is used to determine the average blink length.
+                      The features used in the classification algorithm are as follows:
+                       <img id = "finite"src="img/finite.png" alt="finite machine" align="right"> 
+                      <ul style="list-style-type:none"> 
+                        <li><i>Blink start time ==> Append to array of blink start times [b_0, b_1, b_2...]</i></li>
+                        <li><i>Blink length ==> Append to array of blink lengths [l_0,l_1,l_2,...]</i></li>
+                      </ul>
+                    </p>
+                      
+      
 
-                      <q>(DIAGRAM) -> State Machine to determine blinking</q>
-
-
-                      <h4>Blink Length Detection</h4>
-                      As seen in the state machine diagram above, the blink length detection can be calculated by subtracting the time from which the blink is detected to the time when the blink is determined to be finished. 
-
-                      <h4>Yawn Detection </h4>
-                      In a very similar manner to the blink detection, the yawn detection is performed by attempting to locate the mouth in a limited bounded box. Upon observation, we noticed that a yawn would mean an increase in the size of the mouth. We then designed an appropriate bounding box such that a yawn would overrun the bounding box and the mouth would not be detected. The finite state machine to determine yawns follows:
-
-
-
-                      <h4>How to Determine Drowsiness</h4>
-
-                      A following step in the algorithm is drowsiness detection. Previous papers showed large detection accuracy by making use of only blinking information. We considered another factor such as the yawn rate and blink length. (<a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7396336">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7396336</a>) <a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5648121">http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5648121</a>.
-
-                      <br>
-                      We proposed a simple classifier to determine drowsiness in place to previous research where simple blink ratio or blink length was used. The three features in our design were blink rate, yawn rate, and avg blink length of the last 10 blinks (all moving averages). This data feed is analyzed in the Raspberry Pi (onboard computer) and sent directly to the back-end server. 
-
-                      Classification:
-                        We tried many classification algorithms using Weka. J48 Classifier proved an accuracy of about 90% correctly classified instances.  Figure {FIGURE} shows the confusion matrix for the classification algorithm. 
-                        
+                      <h4>Yawn Detection:</h4>
+                      <p>The Yawn detection algorithm is very similar as the blink detection algorithm. The mouth detection proved to be less robust and more prone to misses, and thus we decided to have a threshold of minimum 5 continuous non-mouth frames to determine that a yawn was executed. Other considerations were taken into account to determine a yawn since there were many false positives while testing. False positives were triggered for anything from a person looking away, talking loudly, or placing a hand in front of the mouth. Further work on yawn detection could provide a more reliable drowsiness detection algorithm. </p>
 
 
-
-
-                   </p>
                   </div>
                 </li>
               </ul>
@@ -465,7 +452,7 @@
             <div class="thumbnail">
               <img class = "people_img" src="img/m.jpg" alt="Micheal">
               <p class="name">Michael Nowakowski</p > 
-              <div class="caption people_intro">Focused on recognizing drowsy driving through yawn and blink detection in a car-mounted webcam system powered by a Raspberry Pi.</div>
+              <div class="caption people_intro">Michael Nowakowski is a senior Computer Science/Film double major at Northwestern. He was involved in implementing yawn detection, multithreading, and overall system design, as well as creating the video that summarizes the project.</div>
             </div>
         </div>
         <div class="people col-md-3">

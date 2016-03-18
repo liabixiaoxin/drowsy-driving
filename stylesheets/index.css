@@ -31,9 +31,18 @@
 }
 li{
 	font-size: 18px;
+
+
+}
+object{
+	width: 580px;
+    height: 900px;
+    margin-top: 50px;
+    padding-top: 20px;
+}
 }
 /*Result*/
-#li-text{
+#li-text p,#li-text li{
 	font-size:1.5rem;
 }
 .panel-title{
@@ -80,6 +89,14 @@ li{
 }
 
 /*Drowsiness Dedection*/
+#blink-side-text{
+	text-align: left;
+}
+#finite{
+	margin: 20px 50px 0 50px;
+	width:300px;
+
+}
 #eye-icon{
 	width: 60px;
 }
