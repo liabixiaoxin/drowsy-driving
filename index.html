@@ -29,14 +29,13 @@
           <!-- <div class="container"> -->
             <div class="video col-md-5">
 
-              <iframe width="450" height="315" src="https://www.youtube.com/embed/adgXvC8Ppo8" frameborder="0" allowfullscreen></iframe>
+              <iframe width="450" height="315" src="https://www.youtube.com/embed/adgXvC8Ppo8" frameborder="0" allowfullscreen='1'></iframe>
 
             </div>
 
             <div class="video-text col-md-6 col-md-offset-1">
-              <p>Drowsy Driving is a widespread problem in the United States. It is a known cause of crashes and fatal accidents every year. </p>
-              <p>Nevertheless, identifying drowsiness and acting on it is a challenging task. </p>
-              <p>Our App presents a novel mobile solution in order to identify drowsiness and keep drowsy drivers awake. </p>
+              <p>Drowsy Driving is a widespread problem in the United States. It is a known cause of thousands of crashes and fatal accidents every year. Yet, there are few solutions in the market ready to be portable and adaptable to a wide arrang of consumers. This is due to the fact that identifying drowsiness and acting on it is a very challenging task.  </p>
+              <p>Our App presents a novel mobile solution in order to identify drowsiness and keep drowsy drivers awake through hands-free interaction with the driver. </p>
               
             </div>
           <!-- </div> -->
@@ -58,7 +57,7 @@
             <div class="video-text col-md-6 ">
               <object data="img/drowsy_driving.pdf" type="application/pdf" view= "Fit">
                
-                <p>you can <a href="img/main.pdf">click here to
+                <p>you can <a href="img/drowsy_driving.pdf">click here to
                 download the PDF file.</a></p>
                 
               </object> 
@@ -159,8 +158,8 @@
             <div class="panel-body">
               <ul>
                 <li>Implementation of Detector => Cloud => Android App</li>
-                <li>Update data every 2 seconds.</li>
-                <li>Easy to manipulate the database</li>
+                <li>Data is being constantly updated, every 20 seconds. In addition, requests from the Android App are generated at a period shorter than 5 seconds. </li>
+                <li>The Cloud hosting and computation environment used is Cloud 9. This system allows us to set up a LAMP stack and manage a vm as a local machine. </li>
               </ul>
             </div>
           </div>
@@ -208,9 +207,8 @@
                   <!-- <br>Raspberry-pi record driver's face imange, analyse  -->
                 </div>
                 <div class="col-md-6 pi-text">
-                 <p>Optimized to a maximum performance of 5 fps.
-                    <q>We need 2 frames to detect a blink = 0.4 seconds + overhead (detection)</q>
-                    <br><q>However, average blink is 0.2 seconds ⇒ lost detecting blinks</q>
+                <p> The algorithm we developed was fast enough to work seamlessly on any relatively new desktop or laptop computer. Nevertheless, when we tried using the Raspberry Pi, we initially got a performance of 2-3 fps. After implementing optimizations mentioned in the research paper, we achieved a sampling ratio of 5 fps.</p>
+                 <p>Here, a new problem comes up. As stated in the Drowsiness Detection section, we need 3 frames in order to correctly measure a blink. 3 frames at 5fps = 0.6 seconds. An average human blink takes between 0.1 and 0.4 seconds. Thus, the current design is not a feasible design for the Raspberry Pi. Further optimizations and using the new Raspberry Pi 3 could fix this issue. 
                  </p>
                 </div>
               </div>     
@@ -246,7 +244,7 @@
           </div>
 
           <div class="polaroid col-md-3">
-            <img src="img/alert.jpg" alt="data page" style="width:100%">
+            <img src="img/voice_alert.jpg" alt="data page" style="width:100%">
             <div class="container ui-text ui-text2">
             <p>Alert Driver</p>
            </div>
@@ -255,7 +253,7 @@
           <div class="polaroid col-md-3">
             <img src="img/googleMap.jpg" alt="data page" style="width:100%">
             <div class="container ui-text ui-text4">
-            <p>Open Google Map</p>
+            <p>Open Google Maps</p>
            </div>
          </div>
         </div>
@@ -267,16 +265,16 @@
   </div>
 
       <div class="jumbotron fadeInDown animated content_odd">
-       <h2>HOW IT WORKS?</h2> 
+       <h2>How does this work?</h2> 
        <div class="row">
         <div class="ppt col-md-5"><img src="img/how.png" alt="How Drowsy-Driving Works"></div>
         <div class="text_intro col-md-7">
           <ul>
             <li>Mounted camera records the image of driver while driving.</li>
-            <li>Respberry-Pi does image analysis to tell the level of drowsiness.</li>
-            <li>Upload data to database</li>
+            <li>Raspberry Pi does image analysis and determines driver's level of drowsiness</li>
+            <li>Raspberry Pi uploads information to a cloud database</li>
             <li>Android App pulls data from database.</li>
-            <li>Alert driver when passing the threshold and interact with driver to keep them awake.</li>
+            <li>App interacts with the driver when drowsiness is detected and attempts to provide a solution</li>
           </ul>
 
         </div>
@@ -320,24 +318,24 @@
 
       
       <div class="jumbotron fadeInDown animated content_even">
-       <h2>DROWSINESS DETECTION</h2> 
+       <h2>What factors did we look at?</h2> 
        <!-- <h4> Image Analysis</h4> -->
         <div class="row well well1">
           <div class="col-md-2"><img src="img/eye_icon.png" alt="eye icon" id= "eye-icon"></div>
-          <div class="col-md-10 well-text ">Detect Face, Eyes, Mouth => Blink Rate Detection  &  Blink Length Detection  </div>
+          <div class="col-md-10 well-text ">Blink rate and length detection</div>
         </div>
         
         <div class="row well well2">
           <div class="col-md-2"><img src="img/yawn.png" alt="eye icon" id= "eye-icon"></div>
-          <div class="col-md-10 well-text ">Yawn Rate Detection  </div>
+          <div class="col-md-10 well-text ">Yawn rate detection  </div>
         </div>
         <div class="row well well3">
           <div class="col-md-2"><img src="img/glasses.png" alt="eye icon" id= "eye-icon"></div>
-          <div class="col-md-10 well-text">Wearing Glasses or Not?  </div>
+          <div class="col-md-10 well-text">System performance when someone wears glasses or a clear vision is otherwise obstructed  </div>
         </div>
          <div class="row well well4">
           <div class="col-md-2"><img src="img/hand.png" alt="eye icon" id= "eye-icon"></div>
-          <div class="col-md-10 well-text">Gesture Affect  </div>
+          <div class="col-md-10 well-text">Interactivity methods and providing a real solution  </div>
         </div>
 
 
@@ -347,7 +345,7 @@
 
 
       <div class="jumbotron fadeInDown animated survey content_odd">
-        <h2> HOW DO YOU LIKE THE APP?</h2>
+        <h2> How do you like the app?</h2>
         <div class="survey">
           <form action="">
           <lable >How do you like "Drowsy Driving"?</lable>
@@ -377,7 +375,7 @@
 
   
 
-          <lable>What is the part you hate most about this app?</lable>
+          <lable>What do you think should be changed?</lable>
           <ul class='likert  '>
       <li>
         <input type="radio" class = "submit2" name="likert1" value="strong_agree">
@@ -389,7 +387,7 @@
       </li>
       <li>
         <input type="radio" class = "submit2" name="likert1" value="strong_agree">
-        <label>Some function</label>
+        <label>Maps integration</label>
       </li>
       <li>
         <input type="radio" class = "submit2" name="likert1" value="strong_agree">
@@ -414,7 +412,7 @@
       </li>
       <li>
         <input type="radio" class = "submit3" name="likert2" value="strong_agree">
-        <label>Nearby spot</label>
+        <label>Maps integration</label>
       </li>
       <li>
         <input type="radio" class = "submit3" name="likert2" value="strong_agree">
@@ -437,13 +435,17 @@
       </div>
       
        <div class="jumbotron fadeInDown animated team-intro content_even bc6">
-        <h2>WHO WE ARE?</h2>
+        <h2>Who are we?</h2>
         <div class="row">
           <div class="people col-md-3">
             <div class="thumbnail">
               <img  class = "people_img"  src="img/b.jpg" alt="Bruno">
               <p class="name">Bruno Peynetti</p >
+<<<<<<< HEAD
               <div class="caption people_intro">Bruno is a Computer Engineering master student at Northwestern. Worked on implementing blink detection, multithreading,buiding up database,as well as writing the paper of the project.</div>
+=======
+              <div class="caption people_intro">Bruno is a Computer Engineering BS/MS student at Northwestern. Worked on implementing blink detection, multithreading,buiding up database, overall system design, as well as leading the research paper for the project.</div>
+>>>>>>> origin/gh-pages
             </div>
           </div>
         
@@ -451,7 +453,11 @@
             <div class="thumbnail">
               <img class = "people_img" src="img/m.jpg" alt="Micheal">
               <p class="name">Michael Nowakowski</p > 
+<<<<<<< HEAD
               <div class="caption people_intro">Michael is a senior Computer Science/Film double major at Northwestern. Worked on  implementing yawn detection, multithreading, as well as creating the video that summarizes the project.</div>
+=======
+              <div class="caption people_intro">Michael is a senior Computer Science/Film double major at Northwestern. Worked on  implementing yawn detection, multithreading, and overall system design, as well as creating the video that summarizes the project.  </div>
+>>>>>>> origin/gh-pages
             </div>
         </div>
         <div class="people col-md-3">
