@@ -10,7 +10,7 @@
 
 \title{A Solution to Drowsy Driving via real-time Image Analysis}
 
-\author{Bruno Peynetti, Michael Nowakowski, \\Yannan Xu, Baiyu Yang}
+\author{Bruno Peynetti, Michael Nowakowski, \\Baiyu Yang， Yannan Xu}
 
 \date{\today}
 
@@ -62,7 +62,7 @@ The following section proposes a drowsiness detection algorithm by making use of
 \begin{itemize}
 \item Blink rate (blinks per minute)
 \item Yawn rate (yawns per minute)
-\item Blink length (moving average length of previous yaws)
+\item Blink length (moving average length of previous blinks)
 \end{itemize}
 In order to calculate these features, we designed an algorithm that will make use of image recognition analysis in order to detect the face, eyes, and mouth in every frame. Afterwards, information from subsequent frames is fed into the algorithm in order to extract the required features. \\
 The flowchart on Figure \ref{fig:drowsy_algo} describes the process to detect drowsiness. The algorithm is attempted with each camera frame, and a different algorithm (discussed later in the section) determines the level of drowsiness. \\
@@ -197,7 +197,7 @@ This measurement is for the lower end of the average human blink. When testing t
 
 \section{Results and Discussion}
 \subsection{Data Analysis}
-We analyze the data collection results and the performance of our algorithm. Additionally, we tested the functionality of the system as a whole. 
+We analyzed the data collection results and the performance of our algorithm. Additionally, we tested the functionality of the system as a whole. 
 % show the features as results 
 \begin{figure}[H]
 \centering
